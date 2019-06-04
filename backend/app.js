@@ -10,7 +10,7 @@ const app = express();
 // Mongo PW: Password1
 // Mongo Connection String: mongodb+srv://Will_Brogrammer:<password>@mean-cluster-swfhi.mongodb.net/test?retryWrites=true&w=majority
 
-mongoose.connect("mongodb+srv://Will_Brogrammer:Password1@mean-cluster-swfhi.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true })
+mongoose.connect("mongodb+srv://Will_Brogrammer:Password1@mean-cluster-swfhi.mongodb.net/node-angular?retryWrites=true&w=majority", { useNewUrlParser: true })
   .then(() => {
     console.log('Connected to Database!');
   })
@@ -39,7 +39,7 @@ app.post("/api/posts", (req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
-  console.log(post);
+  post.save();
   res.status(201).json({
     message: 'Post added successfully'
   });
