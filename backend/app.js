@@ -1,7 +1,10 @@
-const express = require('express');
+const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -12,29 +15,33 @@ app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PATCH, DELETE, OPTIONS"
-    );
+  );
   next();
 });
 
 app.post("/api/posts", (req, res, next) => {
-  console.log();
+  const post = req.body;
+  console.log(post);
+  res.status(201).json({
+    message: 'Post added successfully'
+  });
 });
 
-app.use("/api/posts", (req, res, next) => {
+app.get("/api/posts", (req, res, next) => {
   const posts = [
     {
-      id: "kfhbskldfnhlk",
-      title: "First Server-side post",
+      id: "fadf12421l",
+      title: "First server-side post",
+      content: "This is coming from the server"
+    },
+    {
+      id: "ksajflaj132",
+      title: "Second server-side post",
       content: "This is coming from the server!"
-  },
-  {
-    id: "gfdhkreh",
-    title: "Second Server-side post",
-    content: "This is coming from the server!!"
-}
+    }
   ];
   res.status(200).json({
-    message: 'Posts fetched Successfully!',
+    message: "Posts fetched successfully!",
     posts: posts
   });
 });

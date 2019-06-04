@@ -8,6 +8,8 @@ Run `npm install -g @angular/cli` to install the Angular CLI.
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+Run `npm run start:server` To Start Nodemon, watch the server, fetch posts from the server and display posts from the server.
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
