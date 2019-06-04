@@ -37,3 +37,7 @@ export class PostsService {
       });
   }
 }
+
+// Mongo UN: Will_Brogrammer
+// Mongo PW: Password1
+// Mongo Connection String: mongodb+srv://Will_Brogrammer:<password>@mean-cluster-swfhi.mongodb.net/test?retryWrites=true&w=majority
