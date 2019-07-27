@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { PostsService } from '../posts.service';
 import { Post } from '../post.model';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -15,6 +16,7 @@ export class PostCreateComponent implements OnInit {
   post: Post;
   isLoading = false;
   form: FormGroup;
+  imagePreview: string;
   private mode = 'create';
   private postId: string;
 
@@ -33,7 +35,8 @@ export class PostCreateComponent implements OnInit {
         validators: [Validators.required]
       }),
       image: new FormControl(null, {
-        validators: [Validators.required]
+        validators: [Validators.required],
+        asyncValidators: [mimeType]
       })
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -60,13 +63,18 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  /*Logic for the Image picker*/
+  /*Logic for the Image picker - used patchValue() to only update this section of the form*/
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
     this.form.get('image').updateValueAndValidity();
     console.log(file);
     console.log(this.form);
+    const reader = new FileReader(); /*Create Reader*/
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    }; /*Define what happens when it's done reading in a file - asynchronous*/
+    reader.readAsDataURL(file); /*Load the file*/
   }
 
   onSavePost() {
