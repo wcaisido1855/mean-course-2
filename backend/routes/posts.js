@@ -26,22 +26,28 @@ const storage = multer.diskStorage({
       .split(' ')
       .join('-');
     const ext = MIME_TYPE_MAP[file.mimetype];
+    // Callback Below actually creates the image name
     cb(null, name + '-' + Date.now() + '.' + ext);
   }
 });
 
-router.post('', multer(storage).single('image'), (req, res, next) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content
-  });
-  post.save().then((createdPost) => {
-    res.status(201).json({
-      message: 'Post added successfully',
-      postId: createdPost._id
+// To Call the File Upload function and validation above, just add this to router.post as an expected argument: "multer(storage).single('image')"
+router.post(
+  '',
+  multer({ storage: storage }).single('image'),
+  (req, res, next) => {
+    const post = new Post({
+      title: req.body.title,
+      content: req.body.content
     });
-  });
-});
+    post.save().then((createdPost) => {
+      res.status(201).json({
+        message: 'Post added successfully',
+        postId: createdPost._id
+      });
+    });
+  }
+);
 
 router.put('/:id', (req, res, next) => {
   const post = new Post({
