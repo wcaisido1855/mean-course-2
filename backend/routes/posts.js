@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(null, 'backend/images');
+    cb(error, 'backend/images');
   },
   filename: (req, file, cb) => {
     const name = file.originalname
@@ -36,14 +36,19 @@ router.post(
   '',
   multer({ storage: storage }).single('image'),
   (req, res, next) => {
+    const url = req.protocol + '://' + req.get('host'); // Construct and store the URL to the server
     const post = new Post({
       title: req.body.title,
-      content: req.body.content
+      content: req.body.content,
+      imagePath: url + '/images/' + req.file.filename // This uses the SErver URL from above and creates the image path
     });
     post.save().then((createdPost) => {
       res.status(201).json({
         message: 'Post added successfully',
-        postId: createdPost._id
+        post: {
+          ...createdPost,
+          id: createdPost._id
+        }
       });
     });
   }
