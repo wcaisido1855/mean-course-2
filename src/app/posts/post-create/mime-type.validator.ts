@@ -1,7 +1,7 @@
 /*Just going to export this function - all validators are just funcitons that read in a value & determin whether ior not it's true*/
 
 import { AbstractControl } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 
 /*Using Promse & Observable since This is an asynchronous task.
 Have to use special syntax - <{ [key: string]: any}> to tell the promise
@@ -10,6 +10,9 @@ and observable what to expect*/
 export const mimeType = (
   control: AbstractControl
 ): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
+  if (typeof control.value === 'string') {
+    return of(null);
+  }
   const file = control.value as File;
   const fileReader = new FileReader();
   const frObs = Observable.create(
